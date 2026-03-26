@@ -37,7 +37,7 @@ export function getBackdrop(context) {
   shadowRoot.appendChild(internalBackdropElement);
 
   const defaultStylesTag = createElement('style');
-  defaultStylesTag.innerHTML = backdropStyles;
+  defaultStylesTag.textContent = backdropStyles;
   shadowRoot.appendChild(defaultStylesTag);
 
   const backdropCustomStyle = createElement('style');
@@ -238,7 +238,7 @@ export function createStructure(context) {
     if (!context.popUp) return;
 
     context.elements.style = createElement('style');
-    context.elements.style.innerText = styles;
+  context.elements.style.textContent = styles;
 
     let existingStyle = context.popUp.querySelector('style');
     

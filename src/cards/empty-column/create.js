@@ -6,7 +6,7 @@ export function createStructure(context) {
   context.elements.emptyColumnCard = createElement('div', 'bubble-empty-column empty-column');
 
   context.elements.style = createElement('style');
-  context.elements.style.innerText = styles;
+  context.elements.style.textContent = styles;
   context.elements.customStyle = createElement('style');
 
   context.content.innerHTML = '';

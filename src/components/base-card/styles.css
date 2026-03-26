@@ -177,10 +177,6 @@ ha-card {
     transition: all .3s ease-in-out;
 }
 
-.is-off .bubble-main-icon {
-    opacity: 0.6;
-}
-
 .is-on .bubble-main-icon {
   /* filter: brightness(1.1); */
   opacity: 1;

@@ -14,6 +14,21 @@ import {
 import { applyScrollingEffect } from '../../tools/text-scrolling.js';
 import { getIcon, getImage, getIconColor } from '../../tools/icon.js';
 import { getClimateColor } from '../../cards/climate/helpers.js';
+import { convertToRGBA } from '../../tools/style.js';
+
+const OFF_ICON_ALPHA = 0.6;
+
+function getOffStateIconColor(iconElement, baseIconColor) {
+    if (!iconElement) return baseIconColor;
+
+    const restoredColor = baseIconColor === 'inherit' ? '' : baseIconColor;
+
+    if (iconElement.style.color !== restoredColor) {
+        iconElement.style.color = restoredColor;
+    }
+
+    return convertToRGBA(window.getComputedStyle(iconElement).color, OFF_ICON_ALPHA);
+}
 
 export function changeState(context) {
     const entity = context.config?.entity;
@@ -212,6 +227,11 @@ export function changeIcon(context) {
         }
     }
 
+    const displayedIconColor = !isOn && newImage === ''
+        ? getOffStateIconColor(context.elements.icon, newIconColor)
+        : newIconColor;
+    const inlineIconColor = displayedIconColor === 'inherit' ? '' : displayedIconColor;
+
     if (context.elements.iconContainer) {
         if (newIconColor !== 'inherit') {
             if (currentIconColor !== newIconColor) {
@@ -237,8 +257,8 @@ export function changeIcon(context) {
         if (currentIcon !== newIcon) {
             context.elements.icon.icon = newIcon;
         }
-        if (context.elements.icon.style.color !== newIconColor) {
-            context.elements.icon.style.color = newIconColor;
+        if (context.elements.icon.style.color !== inlineIconColor) {
+            context.elements.icon.style.color = inlineIconColor;
         }
         if (currentIconDisplay !== '') {
             context.elements.icon.style.display = '';

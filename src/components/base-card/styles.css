@@ -166,7 +166,6 @@ ha-card {
     border-radius: var(--bubble-card-type-icon-border-radius, var(--bubble-icon-border-radius, var(--bubble-border-radius, 50%)));
     background-color: var(--bubble-card-type-icon-background-color, var(--bubble-icon-background-color, var(--bubble-secondary-background-color, var(--card-background-color, var(--ha-card-background)))));
     overflow: hidden;
-    position: relative;
 }
 
 .bubble-icon-feedback-container {

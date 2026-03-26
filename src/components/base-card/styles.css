@@ -197,7 +197,6 @@ ha-card {
 .bubble-name,
 .bubble-state {
     display: flex;
-    position: relative;
     white-space: nowrap;
 }
 
@@ -209,7 +208,6 @@ ha-card {
     flex-grow: 1;
     margin: 0 16px 0 4px;
     pointer-events: none;
-    position: relative;
     overflow: hidden;
 }
 

@@ -5,6 +5,7 @@ import { preloadYAMLStyles } from './modules/registry.js';
 import { createBubbleDefaultColor } from './tools/style.js';
 import { stopTimerInterval } from './tools/utils.js';
 import { cleanupScrollingEffects } from './tools/text-scrolling.js';
+import { registerPopupContext } from './cards/pop-up/helpers.js';
 import BubbleCardEditor from './editor/bubble-card-editor.js';
 
 import { handlePopUp } from './cards/pop-up/index.js';
@@ -44,8 +45,21 @@ class BubbleCard extends HTMLElement {
     preloadYAMLStyles(this);
     createBubbleDefaultColor();
 
+    // Re-register immediately on reconnect so the centralized URL dispatcher
+    // always has a fresh reference, without waiting for the next set hass call.
+    if (this.config?.card_type === 'pop-up' && this.config?.hash) {
+      registerPopupContext(this);
+    }
+
     if (this._hass) {
-      this.updateBubbleCard();
+      // Defer the heavy update work when a popup is being opened.
+      if (window.__bubblePopupOpening && this.config?.card_type !== 'pop-up') {
+        this._deferredUpdateTimer = setTimeout(() => {
+          if (this.isConnected) this.updateBubbleCard();
+        }, 320); // Slightly longer than the 300ms animation duration
+      } else {
+        this.updateBubbleCard();
+      }
     }
   }
 
@@ -69,6 +83,7 @@ class BubbleCard extends HTMLElement {
       }
     } catch (e) {}
     clearTimeout(this._editorUpdateTimeout);
+    clearTimeout(this._deferredUpdateTimer);
   }
 
   get detectedEditor() {
